@@ -1,42 +1,65 @@
 ---
-const { title, img, desc, url, badge, tags, target = "_blank" } = Astro.props;
-import { Image } from "astro:assets";
-const tag_url = url.split("/").slice(0, -1).join("/") + "/tag";
----
+const {
+  title,
+  img,
+  desc1,
+  desc2,
+  desc3,
+  url = "#",
+  badge,
+  tags = [],
+  target = "_blank",
+} = Astro.props;
 
-<div
-  class="rounded-lg bg-base-100 hover:shadow-xl transition ease-in-out hover:scale-[102%]"
->
-  <a href={url} target={target}>
-    <div class="hero-content flex-col md:flex-row">
-      {
-        img && (
-          <Image
-            src={img}
-            width={750}
-            height={422}
-            format="webp"
-            alt={title}
-            class="max-w-full md:max-w-[13rem] rounded-lg"
-          />
-        )
-      }
+// Build tag base (same as your snippet)
+const tag_url = url.split("/").slice(0, -1).join("/") + "/tag";
+
+// If user provides a <slot name="desc"> we’ll render that instead of desc1/2/3
+const hasRichDesc = Astro.slots.has("desc");
+---
+<div class="rounded-lg bg-base-100 hover:shadow-xl transition ease-in-out hover:scale-[102%]">
+  <a href={url} target={target} class="block">
+    <div class="hero-content flex-col md:flex-row gap-4 md:gap-6 py-4 px-4">
+      {img && (
+        <img
+          src={img}
+          width="750"
+          height="422"
+          alt={title}
+          class="max-w-full md:max-w-[13rem] rounded-lg shrink-0"
+          loading="lazy"
+        />
+      )}
+
       <div class="grow w-full">
-        <h1 class="text-xl font-bold">
+        <h2 class="text-xl font-bold leading-snug">
           {title}
-          {badge && <div class="badge badge-secondary mx-2">{badge}</div>}
-        </h1>
-        <p class="py-1 text-1xl">{desc}</p>
-        <div class="card-actions justify-end">
+          {badge && <span class="badge badge-secondary align-middle ml-2">{badge}</span>}
+        </h2>
+
+        {/* Description area */}
+        <div class="mt-1 space-y-1 leading-relaxed text-base">
           {
-            tags &&
-              tags.map((tag) => (
-                <a href={`${tag_url}/${tag}`} class="badge badge-outline">
-                  {tag}
-                </a>
-              ))
+            hasRichDesc ? (
+              <slot name="desc" />
+            ) : (
+              <>
+                {desc1 && <p class="text-base">{desc1}</p>}
+                {desc2 && <p class="text-base">{desc2}</p>}
+                {desc3 && <p class="text-base">{desc3}</p>}
+              </>
+            )
           }
         </div>
+
+        {/* Tags */}
+        {tags?.length > 0 && (
+          <div class="card-actions justify-end mt-2 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <a href={`${tag_url}/${tag}`} class="badge badge-outline">{tag}</a>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   </a>
