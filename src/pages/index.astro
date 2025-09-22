@@ -7,11 +7,10 @@ import createSlug from "../lib/createSlug"
 const posts = (await getCollection("blog")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const last_posts = posts.slice(0, 3);
-const imagePath = import.meta.env.BASE_URL + 'formulacode.png';
 ---
 
 <BaseLayout sideBarActiveItemID="home">
-  <div class="pb-12 mt-5">
+  <div class="pb-12 mt-5" id="intro">
     <div class="text-4xl py-3 font-bold">Akanksha Sarkar</div>
     <div class="mt-1 text-sm text-gray-500 font-normal"> as2637 at cornell dot edu</div>
     <div class="py-2">
