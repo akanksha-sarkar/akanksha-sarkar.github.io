@@ -17,7 +17,7 @@ const tag_url = url.split("/").slice(0, -1).join("/") + "/tag";
 // If user provides a <slot name="desc"> we’ll render that instead of desc1/2/3
 const hasRichDesc = Astro.slots.has("desc");
 ---
-<div class="rounded-lg bg-base-100 hover:shadow-xl transition ease-in-out hover:scale-[102%]">
+<div class="rounded-xl bg-white shadow-md border border-base-200 hover:shadow-lg transition ease-in-out hover:scale-[102%]">
   <a href={url} target={target} class="block">
     <div class="hero-content flex-col md:flex-row gap-4 md:gap-6 py-4 px-4">
       {img && (
